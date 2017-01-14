@@ -29,12 +29,13 @@ class MTWService( win32serviceutil.ServiceFramework):
         win32serviceutil.ServiceFramework.__init__( self, args)
         self.popn = None
         self.env = os.environ
-        self.env['SSROOT'] = r'c:\ss'
-        self.env['SSROOTX'] = r'c:/ss'
+        # Setup any env vars your child process needs here...
+        # self.env['MYVAR'] = 'myval'
 
     def SvcDoRun( self):
         # NB this function does not return, it blocks in self.popn.communicate( )
         self.ReportServiceStatus(win32service.SERVICE_START_PENDING)
+        # You'll need to fix up these paths for your own child process or exe
         args = [r'c:\python34\python.exe', r'c:\osullivj\src\py\mtwserver.py']
         self.popn = subprocess.Popen( args, cwd=r'c:\osullivj\src\py', env=self.env)
         self.ReportServiceStatus(win32service.SERVICE_RUNNING)
